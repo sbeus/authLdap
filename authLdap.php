@@ -567,14 +567,15 @@ endif;
  */
 function authLdap_show_password_fields($return, $user)
 {
-    if (null === $user) {
+    if (! $user) {
         return true;
     }
 
-    if (get_usermeta($user->ID, 'authLDAP')) {
+    if (get_user_meta($user->ID, 'authLDAP')) {
         return false;
     }
-    return true;
+
+    return $return;
 }
 
 /**
@@ -748,5 +749,5 @@ function authLdap_set_options($new_options = array())
 }
 
 add_action('admin_menu', 'authLdap_addmenu');
-add_filter('show_password_fields', 'authLdap_show_password_fields');
+add_filter('show_password_fields', 'authLdap_show_password_fields', 10, 2);
 add_filter('authenticate', 'authLdap_login', 10, 3);
